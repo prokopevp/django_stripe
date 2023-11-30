@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Заказ</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>var stripe=Stripe("{{stripe_publish_key}}")</script>
+    <script>
+        var goToStripePayment = () => fetch("/buy/order/{{ order.id }}")
+            .then((result) => { return result.json(); })
+            .then((data) => {
+              return stripe.redirectToCheckout({sessionId: data.session_id})
+            })
+    </script>
+</head>
+<body>
+    <h3>Заказ №{{ order.id }}</h3>
+    <ul>
+        {% for item in order.items.all %}
+            <li>{{ item.name }}</li>
+        {% endfor %}
+    </ul>
+    {% if order.discount %}
+        <div style="border: 2px gray solid; padding: 5px; width: max-content;">
+            <b>Скидка</b>:
+            <br>
+            <i>{{order.discount.name}}</i>
+        </div>
+        <br>
+    {% endif %}
+    Итог: {{order_price}} <i>{{currency}}</i>
+    <br>
+    <br>
+    <button id="buy-order-btn" onclick="goToStripePayment()"><h3>Оплатить</h3></button>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{item.name}}</title>
+    {% csrf_token %}
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>var stripe=Stripe("{{stripe_publish_key}}")</script>
+    <script>
+        var goToStripePayment = () => fetch("/buy/{{item.id}}")
+            .then((result) => { return result.json(); })
+            .then((data) => {
+              return stripe.redirectToCheckout({sessionId: data.session_id})
+            })
+    </script>
+</head>
+<body>
+    <h2>{{item.name}}</h2>
+    <i>ID: {{item.id}}</i>
+    <br><br>
+    <div style="border: 1px gray solid; width: max-content; max-width: 50vw;padding: 10px;">
+        {{item.description}}
+    </div>
+    <br>
+    <br>
+    Стоимость: {{item.price}} <i>{{item.currency.upper}}</i>
+    <br>
+    <button id="buy-item-btn" onclick="goToStripePayment()"><h3>Купить!</h3></button>
+</body>
+</html>
