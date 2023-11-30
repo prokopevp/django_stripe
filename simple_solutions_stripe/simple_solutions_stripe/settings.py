@@ -19,7 +19,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 STRIPE_PUBLISH_KEY = os.environ['STRIPE_PUBLISH_KEY']
 STRIPE_PRIVATE_KEY = os.environ['STRIPE_PRIVATE_KEY']
 
-STRIPE_SUPPORTED_CURRENCIES=(('RUB', 'rub'), ('USD', 'usd'), ('EUR', 'eur'), ('CNY', 'cny'))
+STRIPE_SUPPORTED_CURRENCIES=(('rub', 'rub'), ('usd', 'usd'), ('eur', 'eur'), ('cny', 'cny'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 

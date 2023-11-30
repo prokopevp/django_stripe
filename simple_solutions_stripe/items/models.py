@@ -1,19 +1,16 @@
-import stripe
 from django.db import models
 
-from simple_solutions_stripe.settings import STRIPE_PRIVATE_KEY, STRIPE_SUPPORTED_CURRENCIES
-
-stripe.api_key = STRIPE_PRIVATE_KEY
+from simple_solutions_stripe.settings import STRIPE_SUPPORTED_CURRENCIES
 
 
 class Item(models.Model):
     name = models.CharField(blank=False, null=False, max_length=200)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=8, decimal_places=2)
+    description = models.TextField(null=False)
+    price = models.DecimalField(max_digits=8, decimal_places=2, null=False)
     currency = models.CharField(max_length=3, choices=STRIPE_SUPPORTED_CURRENCIES,
-                                default=STRIPE_SUPPORTED_CURRENCIES[0][0])
+                                default=STRIPE_SUPPORTED_CURRENCIES[0][0], null=False)
 
-    product_id = models.CharField(unique=True, max_length=128)
+    product_id = models.CharField(unique=True, max_length=128, null=False)
     price_id = models.CharField(max_length=128)
 
     def __str__(self):
@@ -21,8 +18,8 @@ class Item(models.Model):
 
 
 class Discount(models.Model):
-    percent = models.PositiveIntegerField()
-    name = models.CharField(max_length=200)
+    percent = models.PositiveIntegerField(null=False)
+    name = models.CharField(max_length=200, null=False)
 
     def __str__(self):
         return self.name
