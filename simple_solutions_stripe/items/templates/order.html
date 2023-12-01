@@ -17,14 +17,14 @@
     <h3>Заказ №{{ order.id }}</h3>
     <ul>
         {% for item in order.items.all %}
-            <li>{{ item.name }}</li>
+            <li>{{ item.name }} <i>{{ item.price }} {{ item.currency }}</i></li>
         {% endfor %}
     </ul>
     {% if order.discount %}
         <div style="border: 2px gray solid; padding: 5px; width: max-content;">
             <b>Скидка</b>:
             <br>
-            <i>{{order.discount.name}}</i>
+            <i>{{order.discount.name}} - {{order.discount.percent}}%</i>
         </div>
         <br>
     {% endif %}

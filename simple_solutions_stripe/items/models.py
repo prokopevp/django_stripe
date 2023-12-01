@@ -10,8 +10,8 @@ class Item(models.Model):
     currency = models.CharField(max_length=3, choices=STRIPE_SUPPORTED_CURRENCIES,
                                 default=STRIPE_SUPPORTED_CURRENCIES[0][0], null=False)
 
-    product_id = models.CharField(unique=True, max_length=128, null=False)
-    price_id = models.CharField(max_length=128)
+    product_id = models.CharField(max_length=128, null=False)
+    price_id = models.CharField(max_length=128, null=False)
 
     def __str__(self):
         return f"{self.name} {self.currency.upper()} ({self.id})"

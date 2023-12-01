@@ -20,13 +20,13 @@ class BuyItemAndBuyOrderTest(TestCase):
         self.assertIsInstance(data, dict)
         self.assertIn('session_id', data)
 
-    @mock.patch('services.stripe_.ItemStripeBackend.create_checkout_session')
+    @mock.patch('services.stripe_backend.ItemStripeBackend.create_checkout_session')
     def test_buy_item_view(self, mock_create_item_session):
         mock_create_item_session.return_value = 'mock-session-id'
         response = self.client.get(reverse('buy-item', args=[self.item.id]))
         self.check_session_id_in_response_json(response)
 
-    @mock.patch('services.stripe_.OrderStripeBackend.create_checkout_session')
+    @mock.patch('services.stripe_backend.OrderStripeBackend.create_checkout_session')
     def test_buy_order_view(self, mock_create_order_session):
         mock_create_order_session.return_value = 'mock-session-id'
         response = self.client.get(reverse('buy-order', args=[self.item.id]))

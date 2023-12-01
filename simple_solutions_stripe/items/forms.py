@@ -12,11 +12,12 @@ class ItemForm(ModelForm):
         return self.cleaned_data['price']
 
     def clean_currency(self):
-        item_orders_with_wrong_currency = Order.objects.filter(
-            Q(items__id=self.instance.id) & ~Q(items__currency=self.cleaned_data['currency'])
-        ).count()
-        if item_orders_with_wrong_currency:
-            raise ValidationError(f'Невозможно изменить валюту пока товар находится в заказе...')
+        if self.instance.id:
+            item_orders_with_wrong_currency = Order.objects.filter(
+                Q(items__id=self.instance.id) & ~Q(items__currency=self.cleaned_data['currency'])
+            ).count()
+            if item_orders_with_wrong_currency:
+                raise ValidationError(f'Невозможно изменить валюту пока товар находится в заказе...')
 
         return self.cleaned_data['currency']
 
@@ -26,9 +27,9 @@ class ItemForm(ModelForm):
 
 class OrderForm(ModelForm):
     def clean_items(self):
-        currencies = []
+        currencies = set()
         for item in self.cleaned_data['items']:
-            currencies.append(item.currency)
+            currencies.add(item.currency)
         if len(currencies) > 1:
             raise ValidationError('Невозможно создать заказ с товарами в разных валютах!')
         return self.cleaned_data['items']
